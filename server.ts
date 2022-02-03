@@ -1,5 +1,9 @@
 import express, {Request, Response} from 'express';
+
 const app = express();
+
+
+const dbUrl = 'mongodb+srv://cs5500:<cs5500pw>@cluster0.gw6e0.mongodb.net/cs5500-assignment?retryWrites=true&w=majority'
 
 app.get('/hello', (req: Request, res: Response) =>
     res.send('Hello World!'));
