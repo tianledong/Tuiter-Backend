@@ -1,12 +1,12 @@
-import User from "../models/User";
-import UserModel from "../mongoose/user/UserModel";
-import UserDaoI from "../interfaces/UserDao";
+import User from "../models/users/User";
+import UserModel from "../mongoose/users/UserModel";
+import UserDaoI from "../interfaces/UserDaoI";
 
 /**
  * Implements Data Access Object managing data storage
  * of Users
  * @implements {UserDaoI} UserDaoI
- * @property {UserDao} userDao Private single instance of UserDao
+ * @property {UserDao} userDao Private single instance of UserDaoI
  */
 export default class UserDao implements UserDaoI {
     private static userDao: UserDao | null = null;

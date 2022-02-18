@@ -1,6 +1,6 @@
 import {Request, Response, Express} from "express";
 import TuitDao from "../daos/TuitDao";
-import TuitControllerI from "../interfaces/TuitController";
+import TuitControllerI from "../interfaces/TuitControllerI";
 
 export default class TuitController implements TuitControllerI {
     private static tuitDao: TuitDao = TuitDao.getInstance();
@@ -8,13 +8,13 @@ export default class TuitController implements TuitControllerI {
     public static getInstance = (app: Express): TuitController => {
         if (TuitController.tuitController === null) {
             TuitController.tuitController = new TuitController();
-            app.get('/tuits', TuitController.tuitController.findAllTuits);
-            app.get('/tuits/:tid', TuitController.tuitController.findTuitById);
-            app.get('/users/:uid/tuits', TuitController.tuitController.findTuitsByUser);
-            app.post('/tuits', TuitController.tuitController.createTuit);
-            app.post('/users/:uid/tuits', TuitController.tuitController.createTuitByUser);
-            app.delete('/tuits/:tid', TuitController.tuitController.deleteTuit);
-            app.put('/tuits/:tid', TuitController.tuitController.updateTuit);
+            app.get('/api/tuits', TuitController.tuitController.findAllTuits);
+            app.get('/api/tuits/:tid', TuitController.tuitController.findTuitById);
+            app.get('/api/users/:uid/tuits', TuitController.tuitController.findTuitsByUser);
+            app.post('/api/tuits', TuitController.tuitController.createTuit);
+            app.post('/api/users/:uid/tuits', TuitController.tuitController.createTuitByUser);
+            app.delete('/api/tuits/:tid', TuitController.tuitController.deleteTuit);
+            app.put('/api/tuits/:tid', TuitController.tuitController.updateTuit);
         }
         return TuitController.tuitController;
     }
