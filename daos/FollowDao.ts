@@ -27,8 +27,8 @@ export default class FollowDao implements FollowDaoI {
     findAllUsersThatFollowingUser = async (uid: string): Promise<Follow[]> =>
         followModel.find({userFollowing: uid}).populate("userFollowed").exec();
 
-    userRemoveFollower = async (uid: string, uid1: string): Promise<any> =>
-        followModel.deleteOne({userFollowing: uid, userFollowed: uid1});
+    updateFollow = async (fid: string, follow: Follow): Promise<any> =>
+        followModel.updateOne({_id: fid}, {$set: follow});
 
     userFollowsUser = async (uid: string, uid1: string): Promise<any> =>
         followModel.create({userFollowing: uid1, userFollowed: uid});
