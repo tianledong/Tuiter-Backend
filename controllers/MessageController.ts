@@ -21,8 +21,8 @@ import MessageDao from "../daos/MessageDao";
  *     </li>
  *     <li>POST /api/users/:uid/messages/:uid1 to record that a user sends message to a user
  * </ul>
- * @property {LikeDao} likeDao Singleton DAO implementing likes CRUD operations
- * @property {LikeController} LikeController Singleton controller implementing
+ * @property {MessageDao} messageDao Singleton DAO implementing likes CRUD operations
+ * @property {MessageController} messageController Singleton controller implementing
  * RESTful Web service API
  */
 
