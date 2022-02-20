@@ -7,7 +7,7 @@ export default interface BookmarkControllerI {
 
     findAllBookMarks(req: Request, res: Response): void;
 
-    findAllTuitsBookmarkedByUsr(req: Request, res: Response): void;
+    findAllTuitsBookmarkedByUser(req: Request, res: Response): void;
 
     findAllUserBookmarkedTuit(req: Request, res: Response): void;
 

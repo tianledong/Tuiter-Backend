@@ -37,7 +37,7 @@ export default class BookmarkController implements BookmarkControllerI {
             BookmarkController.bookmarkController = new BookmarkController();
             app.get("/api/bookmarks", BookmarkController.bookmarkController.findAllBookMarks);
             app.get("/api/tuits/:tid/bookmarks", BookmarkController.bookmarkController.findAllUserBookmarkedTuit);
-            app.get("/api/users/:uid/bookmarks", BookmarkController.bookmarkController.findAllTuitsBookmarkedByUsr);
+            app.get("/api/users/:uid/bookmarks", BookmarkController.bookmarkController.findAllTuitsBookmarkedByUser);
             app.post("/api/users/:uid/bookmarks/:tid", BookmarkController.bookmarkController.userBookmarksTuit);
             app.delete("/api/users/:uid/bookmarks/:tid", BookmarkController.bookmarkController.userUnbookmarksTuit);
         }
@@ -76,8 +76,8 @@ export default class BookmarkController implements BookmarkControllerI {
      * @param {Response} res Represents response to client, including the
      * body formatted as JSON arrays containing the tuit objects that bookmarked by a user
      */
-    findAllTuitsBookmarkedByUsr = (req: Request, res: Response) =>
-        BookmarkController.bookmarkDao.findAllTuitsBookmarkedByUsr(req.params.uid)
+    findAllTuitsBookmarkedByUser = (req: Request, res: Response) =>
+        BookmarkController.bookmarkDao.findAllTuitsBookmarkedByUser(req.params.uid)
             .then(bookmarks => res.json(bookmarks));
 
     /**
