@@ -1,5 +1,8 @@
 import {Request, Response} from "express";
 
+/**
+ * @file Declares API for Likes related Controller
+ */
 export default interface LikeControllerI {
     findAllUsersThatLikedTuit(req: Request, res: Response): void;
 

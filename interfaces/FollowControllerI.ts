@@ -1,5 +1,8 @@
 import {Request, Response} from "express";
 
+/**
+ * @file Declares API for Follows related Controller
+ */
 export default interface FollowControllerI {
 
     findAllUsersThatFollowingUser(req: Request, res: Response): void;

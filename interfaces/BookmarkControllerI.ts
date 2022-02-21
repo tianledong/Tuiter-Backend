@@ -1,5 +1,8 @@
 import {Request, Response} from "express";
 
+/**
+ * @file Declares API for Bookmarks related Controller
+ */
 export default interface BookmarkControllerI {
     userBookmarksTuit(req: Request, res: Response): void;
 
