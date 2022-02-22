@@ -16,7 +16,7 @@ import LikeControllerI from "../interfaces/LikeControllerI";
  *     <li>POST /api/users/:uid/likes/:tid to record that a user likes a tuit
  *     </li>
  *     <li>DELETE /api/users/:uid/unlikes/:tid to record that a user
- *     no londer likes a tuit
+ *     no longer likes a tuit
  *     </li>
  * </ul>
  * @property {LikeDao} likeDao Singleton DAO implementing likes CRUD operations
