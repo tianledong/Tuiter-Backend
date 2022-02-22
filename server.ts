@@ -26,9 +26,16 @@ import LikeController from "./controllers/LikeController";
 const app = express();
 app.use(bodyParser.json())
 
+// build the connection string
+const PROTOCOL = "mongodb+srv";
+const DB_USERNAME = process.env.DB_USERNAME;
+const DB_PASSWORD = process.env.DB_PASSWORD;
+const HOST = "cluster0.fgnnm.mongodb.net";
+const DB_NAME = "cs5500-tuiter";
+const DB_QUERY = "retryWrites=true&w=majority";
+const connectionString = `${PROTOCOL}://${DB_USERNAME}:${DB_PASSWORD}@${HOST}/${DB_NAME}?${DB_QUERY}`;
 // connect to the database
-const dbUrl = 'mongodb+srv://cs5500:cs5500pw@cluster0.gw6e0.mongodb.net/cs5500-tuit?retryWrites=true&w=majority'
-mongoose.connect(dbUrl);
+mongoose.connect(connectionString);
 
 app.get('/', (req, res) =>
     res.send('This app is running!'));

@@ -48,7 +48,6 @@ export default class MessageDao implements MessageDaoI {
      */
     findAllMessagesUserReceived = async (uid: string): Promise<Message[]> =>
         messageModel.find({to: uid})
-            .populate("to")
             .populate("from")
             .exec();
 
@@ -61,7 +60,6 @@ export default class MessageDao implements MessageDaoI {
     findAllMessagesUserSent = async (uid: string): Promise<Message[]> =>
         messageModel.find({from: uid})
             .populate("to")
-            .populate("from")
             .exec();
     /**
      * Removes a message from the database

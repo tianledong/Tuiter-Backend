@@ -20,6 +20,7 @@ import MessageDao from "../daos/MessageDao";
  *     <li>PUT /api/messages/:mid to update a message
  *     </li>
  *     <li>POST /api/users/:uid/messages/:uid1 to record that a user sends message to a user
+ *     </li>
  * </ul>
  * @property {MessageDao} messageDao Singleton DAO implementing likes CRUD operations
  * @property {MessageController} messageController Singleton controller implementing

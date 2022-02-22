@@ -1,7 +1,7 @@
 import {Request, Response} from "express";
 
 /**
- * @file Declares API for Users related Controller
+ * @file Declares API for User related Controller
  */
 export default interface UserControllerI {
     findAllUsers(req: Request, res: Response): void;
