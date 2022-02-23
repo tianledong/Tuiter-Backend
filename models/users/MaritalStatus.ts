@@ -8,15 +8,15 @@
  * @enum {string}
  */
 enum MaritalStatus {
-    /** @member {string}
+    /** @member {string} MARRIED
      * user is married
      */
     Married = 'MARRIED',
-    /** @member {string}
+    /** @member {string} SINGLE
      * user is single
      */
     Single = 'SINGLE',
-    /** @member {string}
+    /** @member {string} WIDOWED
      * user is widowed
      */
     Widowed = 'WIDOWED'

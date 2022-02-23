@@ -5,18 +5,18 @@
 /**
  * @typedef AccountType Represents Account Type of user
  * @readonly
- * @enum {string}
+ * @enum {string} AccountType
  */
 enum AccountType {
-    /** @member {string}
+    /** @member {string} PERSONAL
      * personal account
      */
     Personal = 'PERSONAL',
-    /** @member {string}
+    /** @member {string} ACADEMIC
      * academic account
      */
     Academic = 'ACADEMIC',
-    /** @member {string}
+    /** @member {string} PROFESSIONAL
      * professional account
      */
     Professional = 'PROFESSIONAL'

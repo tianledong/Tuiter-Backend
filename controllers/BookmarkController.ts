@@ -15,9 +15,9 @@ import BookmarkDao from "../daos/BookmarkDao";
  *     </li>
  *     <li>GET /api/users/:uid/bookmarks to retrieve all tuits that bookmarked by a user
  *     </li>
- *     <li>POST /api/users/:uid/bookmarks/:tid tp record a user bookmarks a tuit
+ *     <li>POST /api/users/:uid/bookmarks/:tid to record a user bookmarks a tuit
  *     </li>
- *     <li> DELETE /api/users/:uid/bookmarks/:tid to record that a user no longer bookmarks a tuit</li>
+ *     <li>DELETE /api/users/:uid/bookmarks/:tid to record that a user no longer bookmarks a tuit</li>
  * </ul>
  * @property {BookmarkDao} bookmarkDao Singleton DAO implementing bookmark CRUD operations
  * @property {BookmarkController} bookmarkController Singleton controller implementing
