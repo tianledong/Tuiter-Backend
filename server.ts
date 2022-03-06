@@ -22,9 +22,11 @@ import FollowController from "./controllers/FollowController";
 import BookmarkController from "./controllers/BookmarkController";
 import MessageController from "./controllers/MessageController";
 import LikeController from "./controllers/LikeController";
+var cors = require('cors')
 
 const app = express();
-app.use(bodyParser.json())
+app.use(bodyParser.json());
+app.use(cors());
 
 // build the connection string
 const PROTOCOL = "mongodb+srv";
