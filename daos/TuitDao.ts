@@ -97,5 +97,5 @@ export default class TuitDao implements TuitDaoI {
      * @returns Promise To be notified when tuits are deleted from the database
      */
     deleteTuitsByUser = async (uid: string): Promise<any> =>
-        TuitModel.deleteOne({postBy: uid});
+        TuitModel.deleteMany({postedBy: uid});
 }
