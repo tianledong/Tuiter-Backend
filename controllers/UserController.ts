@@ -137,12 +137,12 @@ export default class UserController implements UserControllerI {
 
     /**
      * Records register a user from the database
-     * @param {Request} req Represents request from client, including the body
-     * containing the JSON object for the username
+     * @param {Request} req Represents request from client, including the path
+     * parameter username representing user's username
      * @param {Response} res Represents response to client, including the status
      * on whether deleting the user was successful or not
      */
     deleteUserByUsername = (req: Request, res: Response) =>
-        UserController.userDao.deleteUserByUsername(req.body.username)
+        UserController.userDao.deleteUserByUsername(req.params.username)
             .then(status => res.json(status));
 }
