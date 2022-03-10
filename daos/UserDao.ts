@@ -69,4 +69,29 @@ export default class UserDao implements UserDaoI {
      */
     deleteUser = async (uid: string): Promise<any> =>
         UserModel.deleteOne({_id: uid});
+
+    /**
+     * Finds user from the database.
+     * @param {string} username user's username
+     * @param {string} password user's password
+     * @returns Promise To be notified when user is found in the database
+     */
+    findUserByCredentials = async (username: string, password: string): Promise<any> =>
+        UserModel.findOne({username: username, password: password});
+
+    /**
+     * Finds user from the database.
+     * @param {string} username user's username
+     * @returns Promise To be notified when user is found in the database
+     */
+    findUserByUsername = async (username: string): Promise<any> =>
+        UserModel.findOne({username});
+
+    /**
+     * Deletes a user from the database.
+     * @param {string} username user's username
+     * @returns Promise To be notified when user is deleted from the database
+     */
+    deleteUserByUsername = async (username: string): Promise<any> =>
+        UserModel.deleteMany({username: username});
 };

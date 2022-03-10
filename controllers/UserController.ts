@@ -42,6 +42,11 @@ export default class UserController implements UserControllerI {
             app.post('/api/users', UserController.userController.createUser);
             app.delete('/api/users/:uid', UserController.userController.deleteUser);
             app.put('/api/users/:uid', UserController.userController.updateUser);
+            app.post('/api/login', UserController.userController.login);
+            app.post('/api/register', UserController.userController.register);
+
+            // for testing
+            app.get("/api/users/username/:username/delete", UserController.userController.deleteUserByUsername);
         }
         return UserController.userController
     }
@@ -104,5 +109,40 @@ export default class UserController implements UserControllerI {
      */
     updateUser = (req: Request, res: Response) =>
         UserController.userDao.updateUser(req.params.uid, req.body)
+            .then(status => res.json(status));
+
+    /**
+     * Records login a user from the database
+     * @param {Request} req Represents request from client, including the body
+     * containing the JSON object for the username and password
+     * @param {Response} res Represents response to client, including the user information
+     */
+    login = (req: Request, res: Response) =>
+        UserController.userDao.findUserByCredentials(req.body.username, req.body.password)
+            .then(user => {
+                res.json(user)
+            });
+
+    /**
+     * Records register a user from the database
+     * @param {Request} req Represents request from client, including the body
+     * containing the JSON object for the username
+     * @param {Response} res Represents response to client, including the user information
+     */
+    register = (req: Request, res: Response) =>
+        UserController.userDao.findUserByUsername(req.body.username)
+            .then(user => {
+                res.json(user)
+            });
+
+    /**
+     * Records register a user from the database
+     * @param {Request} req Represents request from client, including the body
+     * containing the JSON object for the username
+     * @param {Response} res Represents response to client, including the status
+     * on whether deleting the user was successful or not
+     */
+    deleteUserByUsername = (req: Request, res: Response) =>
+        UserController.userDao.deleteUserByUsername(req.body.username)
             .then(status => res.json(status));
 }
