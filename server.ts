@@ -22,11 +22,25 @@ import FollowController from "./controllers/FollowController";
 import BookmarkController from "./controllers/BookmarkController";
 import MessageController from "./controllers/MessageController";
 import LikeController from "./controllers/LikeController";
+
 var cors = require('cors')
+const session = require("express-session");
 
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
+
+let sess = {
+    secret: process.env.SECRET,
+    cookie: {
+        secure: false
+    }
+};
+
+if (process.env.ENV === 'PRODUCTION') {
+    app.set('trust proxy', 1) // trust first proxy
+    sess.cookie.secure = true // serve secure cookies
+}
 
 // build the connection string
 const PROTOCOL = "mongodb+srv";
