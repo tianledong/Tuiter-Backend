@@ -15,7 +15,6 @@ const AuthenticationController = (app: Express) => {
         const existingUser = await userDao
             .findUserByUsername(username);
         const match = await bcrypt.compare(password, existingUser.password);
-
         if (match) {
             existingUser.password = '*****';
             // @ts-ignore

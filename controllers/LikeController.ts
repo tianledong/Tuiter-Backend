@@ -58,14 +58,22 @@ export default class LikeController implements LikeControllerI {
 
     /**
      * Retrieves all tuits liked by a user from the database
-     * @param {Request} req Represents request from client, including the path
+     * @param {Request} req Represents request from client, including the pathfindAllTuitsLikedByUser
      * parameter uid representing the user liked the tuits
      * @param {Response} res Represents response to client, including the
      * body formatted as JSON arrays containing the tuit objects that were liked
      */
-    findAllTuitsLikedByUser = (req: Request, res: Response) =>
-        LikeController.likeDao.findAllTuitsLikedByUser(req.params.uid)
+    findAllTuitsLikedByUser = (req: Request, res: Response) => {
+        let userId = req.params.uid === "me"
+        // @ts-ignore
+        && req.session['profile'] ?
+            // @ts-ignore
+            req.session['profile']._id :
+            req.params.uid;
+
+        LikeController.likeDao.findAllTuitsLikedByUser(userId)
             .then(likes => res.json(likes));
+    }
 
     /**
      * Records that a user likes a tuit from the database

@@ -26,6 +26,9 @@ import AuthenticationController from "./controllers/AuthenticationController";
 import SessionController from "./controllers/SessionController";
 import GroupController from "./controllers/GroupController";
 
+// const dotenv = require("dotenv")
+// dotenv.config()
+
 var cors = require('cors')
 const session = require("express-session");
 
@@ -33,7 +36,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors({
     credentials: true,
-    origin: 'http://localhost:3000'
+    origin: ['http://localhost:3000', 'http://localhost:3000/']
 }));
 
 let sess = {
