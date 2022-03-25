@@ -28,7 +28,10 @@ const session = require("express-session");
 
 const app = express();
 app.use(bodyParser.json());
-app.use(cors());
+app.use(cors({
+    credentials: true,
+    origin: 'http://localhost:3000'
+}));
 
 let sess = {
     secret: process.env.SECRET,
