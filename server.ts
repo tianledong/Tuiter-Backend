@@ -38,6 +38,8 @@ app.use(cors({
 
 let sess = {
     secret: process.env.SECRET,
+    saveUninitialized: true,
+    resave: true,
     cookie: {
         secure: false
     }
@@ -58,6 +60,9 @@ const DB_QUERY = "retryWrites=true&w=majority";
 const connectionString = `${PROTOCOL}://${DB_USERNAME}:${DB_PASSWORD}@${HOST}/${DB_NAME}?${DB_QUERY}`;
 // connect to the database
 mongoose.connect(connectionString);
+
+app.use(session(sess))
+app.use(express.json())
 
 app.get('/', (req, res) =>
     res.send('This app is running!'));
