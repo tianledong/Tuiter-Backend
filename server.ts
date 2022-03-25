@@ -26,8 +26,8 @@ import AuthenticationController from "./controllers/AuthenticationController";
 import SessionController from "./controllers/SessionController";
 import GroupController from "./controllers/GroupController";
 
-// const dotenv = require("dotenv")
-// dotenv.config()
+const dotenv = require("dotenv")
+dotenv.config()
 
 var cors = require('cors')
 const session = require("express-session");
