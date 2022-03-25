@@ -22,6 +22,9 @@ import FollowController from "./controllers/FollowController";
 import BookmarkController from "./controllers/BookmarkController";
 import MessageController from "./controllers/MessageController";
 import LikeController from "./controllers/LikeController";
+import AuthenticationController from "./controllers/AuthenticationController";
+import SessionController from "./controllers/SessionController";
+import GroupController from "./controllers/GroupController";
 
 var cors = require('cors')
 const session = require("express-session");
@@ -67,7 +70,9 @@ const likeController = LikeController.getInstance(app);
 const followController = FollowController.getInstance(app);
 const bookmarkController = BookmarkController.getInstance(app);
 const messageController = MessageController.getInstance(app);
-
+AuthenticationController(app);
+SessionController(app);
+GroupController(app);
 /**
  * Start a server listening at port 4000 locally
  * but use environment variable PORT on Heroku if available.
