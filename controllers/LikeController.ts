@@ -71,8 +71,12 @@ export default class LikeController implements LikeControllerI {
             req.session['profile']._id :
             req.params.uid;
 
-        LikeController.likeDao.findAllTuitsLikedByUser(userId)
-            .then(likes => res.json(likes));
+        try {
+            LikeController.likeDao.findAllTuitsLikedByUser(userId)
+                .then(likes => res.json(likes));
+        } catch (e) {
+            res.sendStatus(404);
+        }
     }
 
     /**

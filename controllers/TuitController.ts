@@ -144,8 +144,12 @@ export default class TuitController implements TuitControllerI {
             // @ts-ignore
             req.session['profile']._id :
             req.params.uid;
-        TuitController.tuitDao.findTuitsByUser(userId)
-            .then(tuits => res.json(tuits));
+        try {
+            TuitController.tuitDao.findTuitsByUser(userId)
+                .then(tuits => res.json(tuits));
+        } catch (e) {
+            res.sendStatus(404)
+        }
     }
 
     deleteTuitsByUser = (req: Request, res: Response) =>
