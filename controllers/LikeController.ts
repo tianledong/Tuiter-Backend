@@ -41,6 +41,7 @@ export default class LikeController implements LikeControllerI {
             app.get("/api/tuits/:tid/likes", LikeController.likeController.findAllUsersThatLikedTuit);
             app.put("/api/users/:uid/likes/:tid", LikeController.likeController.userLikesTuit);
             app.delete("/api/users/:uid/unlikes/:tid", LikeController.likeController.userUnlikesTuit);
+            app.get("/api/users/:uid/likes/:tid", LikeController.likeController.isUserlikesTuit);
         }
         return LikeController.likeController;
     }
@@ -65,19 +66,53 @@ export default class LikeController implements LikeControllerI {
      * @param {Response} res Represents response to client, including the
      * body formatted as JSON arrays containing the tuit objects that were liked
      */
-    findAllTuitsLikedByUser = (req: Request, res: Response) => {
+    findAllTuitsLikedByUser = async (req: Request, res: Response) => {
         let userId = req.params.uid === "me"
         // @ts-ignore
         && req.session['profile'] ?
             // @ts-ignore
             req.session['profile']._id :
             req.params.uid;
+        console.log("Try to find like");
         console.log(userId);
-        try {
-            LikeController.likeDao.findAllTuitsLikedByUser(userId)
-                .then(likes => res.json(likes));
-        } catch (e) {
+        if (userId === "me") {
             res.sendStatus(404);
+        } else {
+            try {
+                let likes = await LikeController.likeDao.findAllTuitsLikedByUser(userId);
+                const tuits = likes.map(likes => likes.tuit);
+                res.json(tuits);
+            } catch (e) {
+                res.sendStatus(404);
+            }
+        }
+    }
+
+    /**
+     * Retrieves if a tuit liked by a user from the database
+     * @param {Request} req Represents request from client, including the path
+     * parameter uid representing the user liked the tuits and tid for tuit
+     * @param {Response} res Represents response to client, including the
+     * body formatted as JSON arrays containing the tuit was liked
+     */
+    isUserlikesTuit = async (req: Request, res: Response) => {
+        let userId = req.params.uid === "me"
+        // @ts-ignore
+        && req.session['profile'] ?
+            // @ts-ignore
+            req.session['profile']._id :
+            req.params.uid;
+        if (userId === "me") {
+            res.sendStatus(404);
+        } else {
+                let tuit = await LikeController.likeDao.isUserlikesTuit(userId, req.params.tid);
+                if (tuit) {
+                    const data = {'like' : true};
+                    res.json(data);
+                } else {
+                    const data = {'like' : false};
+                    res.json(data);
+                }
         }
     }
 
@@ -97,8 +132,6 @@ export default class LikeController implements LikeControllerI {
             // @ts-ignore
             req.session['profile']._id :
             req.params.uid;
-        console.log("Try to like");
-        console.log(userId);
         let tuitId = req.params.tid;
 
         if (userId === "me") {
