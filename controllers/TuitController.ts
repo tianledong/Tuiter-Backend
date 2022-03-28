@@ -104,8 +104,12 @@ export default class TuitController implements TuitControllerI {
             // @ts-ignore
             req.session['profile']._id :
             req.params.uid;
-        TuitController.tuitDao.createTuitByUser(userId, req.body)
-            .then(tuit => res.json(tuit));
+        if (userId === "me") {
+            res.sendStatus(404);
+        } else {
+            TuitController.tuitDao.createTuitByUser(userId, req.body)
+                .then(tuit => res.json(tuit));
+        }
     }
     /**
      * Records deleting a tuit from the database
