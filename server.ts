@@ -25,6 +25,7 @@ import LikeController from "./controllers/LikeController";
 import AuthenticationController from "./controllers/AuthenticationController";
 import SessionController from "./controllers/SessionController";
 import GroupController from "./controllers/GroupController";
+import DisikeController from "./controllers/DislikeController";
 
 const dotenv = require("dotenv")
 dotenv.config()
@@ -75,6 +76,7 @@ app.get('/', (req, res) =>
 const userController = UserController.getInstance(app);
 const tuitController = TuitController.getInstance(app);
 const likeController = LikeController.getInstance(app);
+const dislikeController = DisikeController.getInstance(app);
 const followController = FollowController.getInstance(app);
 const bookmarkController = BookmarkController.getInstance(app);
 const messageController = MessageController.getInstance(app);

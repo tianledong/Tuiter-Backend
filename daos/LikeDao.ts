@@ -1,5 +1,5 @@
 /**
- * @file Implements DAO managing data storage of likes. Uses mongoose UserModel
+ * @file Implements DAO managing data storage of likes. Uses mongoose LikeModel
  * to integrate with MongoDB
  */
 import LikeDaoI from "../interfaces/LikeDaoI";
@@ -47,9 +47,9 @@ export default class LikeDao implements LikeDaoI {
         LikeModel
             .find({likedBy: uid})
             .populate({
-                path: "tuit",         // replace tuit reference with actual document
+                path: "tuit",
                 populate: {
-                    path: "postedBy" // replace tuit's postedBy reference with actual user document
+                    path: "postedBy"
                 }
             })
             .exec();
