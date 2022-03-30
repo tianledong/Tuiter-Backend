@@ -75,7 +75,11 @@ export default class DislikeDao implements DislikeDaoI {
     isUserDislikesTuit = async (uid:string, tid:string) : Promise<any> =>
         DislikeModel.findOne({tuit: tid, dislikedBy: uid});
 
-
+    /**
+     * Count dislike instance for a tuit from the database
+     * @param {string} tid Tuit's primary key
+     * @returns Promise To be notified when dislikes are counted from the database
+     */
     countDislikesForTuit = async (tid: string) : Promise <any> =>
         DislikeModel.count({tuit: tid});
 }
