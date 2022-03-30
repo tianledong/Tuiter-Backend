@@ -19,6 +19,8 @@ import TuitDao from "../daos/TuitDao";
  *     <li>DELETE /api/users/:uid/unlikes/:tid to record that a user
  *     no longer likes a tuit
  *     </li>
+ *     <li>Get /api/users/:uid/likes/:tid to retrieve that a user likes a tuit or not
+ *     </li>
  * </ul>
  * @property {LikeDao} likeDao Singleton DAO implementing likes CRUD operations
  * @property {TuitDao} tuitDao Singleton DAO implementing tuits CRUD operations
@@ -142,17 +144,14 @@ export default class LikeController implements LikeControllerI {
             const targetTuit =  await LikeController.tuitDao.findTuitById(tuitId);
             let likeCount = await LikeController.likeDao.countLikesForTuit(tuitId);
             if (isLiked) {
-                console.log("Try to like -1");
                 await LikeController.likeDao.userUnlikesTuit(userId, tuitId)
                     .then(status => res.send(status));
                 targetTuit.stats.likes = likeCount - 1;
             } else {
-                console.log("Try to like +1");
                 await LikeController.likeDao.userLikesTuit(userId, tuitId)
                     .then(likes => res.json(likes));
                 targetTuit.stats.likes = likeCount + 1;
             }
-            console.log("Try to update tuit");
             await LikeController.tuitDao.updateStats(tuitId, targetTuit.stats);
         }
     }
