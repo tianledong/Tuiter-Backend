@@ -101,4 +101,9 @@ export default class TuitDao implements TuitDaoI {
      */
     deleteTuitsByUser = async (uid: string): Promise<any> =>
         TuitModel.deleteMany({postedBy: uid});
+
+    updateStats = async (tid :string, newStats: any) =>
+            TuitModel.updateOne(
+                {_id: tid},
+                {$set: {stats: newStats}});
 }
