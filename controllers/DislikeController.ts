@@ -112,11 +112,9 @@ export default class DisikeController implements DislikeControllerI {
             let tuit = await DisikeController.dislikeDao.isUserDislikesTuit(userId, req.params.tid);
             if (tuit) {
                 const data = {'dislike': true};
-                console.log(data);
                 res.json(data);
             } else {
                 const data = {'dislike': false};
-                console.log(data);
                 res.json(data);
             }
         }
