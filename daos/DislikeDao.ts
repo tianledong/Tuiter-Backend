@@ -80,6 +80,6 @@ export default class DislikeDao implements DislikeDaoI {
      * @param {string} tid Tuit's primary key
      * @returns Promise To be notified when dislikes are counted from the database
      */
-    countDislikesForTuit = async (tid: string) : Promise <any> =>
+    countDislikesForTuit = async (tid: string) : Promise<any> =>
         DislikeModel.count({tuit: tid});
 }
