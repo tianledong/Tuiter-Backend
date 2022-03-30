@@ -31,8 +31,8 @@ import SessionController from "./controllers/SessionController";
 import GroupController from "./controllers/GroupController";
 import DisikeController from "./controllers/DislikeController";
 
-const dotenv = require("dotenv")
-dotenv.config()
+// const dotenv = require("dotenv")
+// dotenv.config()
 
 var cors = require('cors')
 const session = require("express-session");
@@ -41,7 +41,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors({
     credentials: true,
-    origin: ['http://localhost:3000', 'http://localhost:3000/']
+    origin: ['http://localhost:3000', 'http://localhost:3000/', process.env.FRONTEND]
 }));
 
 let sess = {
@@ -49,13 +49,13 @@ let sess = {
     saveUninitialized: true,
     resave: true,
     cookie: {
-        secure: false
+        sameSite: process.env.NODE_ENV === "production" ? 'none' : 'lax',
+        secure: process.env.ENV
     }
 };
 
 if (process.env.ENV === 'PRODUCTION') {
     app.set('trust proxy', 1) // trust first proxy
-    sess.cookie.secure = true // serve secure cookies
 }
 
 // build the connection string
