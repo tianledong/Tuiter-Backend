@@ -21,7 +21,7 @@ import DislikeDao from "../daos/DislikeDao";
  *     no longer likes a tuit
  *     </li>
  * </ul>
- * @property {DislikeDao} dislikeDao Singleton DAO implementing likes CRUD operations
+ * @property {DislikeDao} dislikeDao Singleton DAO implementing disçlikes CRUD operations
  * @property {DislikeController} dislikeController Singleton controller implementing
  * RESTful Web service API
  */
@@ -142,18 +142,15 @@ export default class DisikeController implements DislikeControllerI {
             const targetTuit =  await DisikeController.tuitDao.findTuitById(tuitId);
             let dislikeCount = await DisikeController.dislikeDao.countDislikesForTuit(tuitId);
             if (isDisliked) {
-                console.log("Try to dislike -1");
                 await DisikeController.dislikeDao.userUndislikesTuit(userId, tuitId)
                     .then(status => res.send(status));
                 targetTuit.stats.dislikes = dislikeCount - 1;
             } else {
-                console.log("Try to dislike +1");
                 await DisikeController.dislikeDao.userDislikesTuit(userId, tuitId)
                     .then(likes => res.json(likes));
                 targetTuit.stats.dislikes = dislikeCount + 1;
             }
-            console.log("Try to update tuit");
-            await DisikeController.tuitDao.updateTuit(tuitId, targetTuit);
+            await DisikeController.tuitDao.updateStats(tuitId, targetTuit.stats);
         }
     }
     /**
