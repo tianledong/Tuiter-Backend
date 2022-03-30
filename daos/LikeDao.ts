@@ -85,6 +85,6 @@ export default class LikeDao implements LikeDaoI {
      * @param {string} tid Tuit's primary key
      * @returns Promise To be notified when likes are counted from the database
      */
-    countLikesForTuit = async (tid: string) : Promise <any> =>
+    countLikesForTuit = async (tid: string) : Promise<any> =>
         LikeModel.count({tuit: tid});
 }
