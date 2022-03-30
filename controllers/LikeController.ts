@@ -153,7 +153,7 @@ export default class LikeController implements LikeControllerI {
                 targetTuit.stats.likes = likeCount + 1;
             }
             console.log("Try to update tuit");
-            await LikeController.tuitDao.updateTuit(tuitId, targetTuit);
+            await LikeController.tuitDao.updateStats(tuitId, targetTuit.stats);
         }
     }
     /**
