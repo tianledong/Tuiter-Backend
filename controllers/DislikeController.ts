@@ -161,7 +161,6 @@ export default class DisikeController implements DislikeControllerI {
                 const likeDAO = LikeDao.getInstance();
                 const isLiked = await likeDAO.isUserlikesTuit(userId, tuitId);
                 if (isLiked) {
-                    await likeDAO.userUnlikesTuit(userId, tuitId);
                     const likes = await likeDAO.countLikesForTuit(tuitId)
                     targetTuit.stats.likes = likes - 1;
                     likeDAO.userUnlikesTuit(userId, tuitId)
