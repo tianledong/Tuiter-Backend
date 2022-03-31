@@ -145,15 +145,18 @@ export default class DisikeController implements DislikeControllerI {
             const targetTuit = await DisikeController.tuitDao.findTuitById(tuitId);
             let dislikeCount = await DisikeController.dislikeDao.countDislikesForTuit(tuitId);
             if (isDisliked) {
-                await DisikeController.dislikeDao.userUndislikesTuit(userId, tuitId)
-                    .then(status => res.send(status));
                 targetTuit.stats.dislikes = dislikeCount - 1;
+                DisikeController.dislikeDao.userUndislikesTuit(userId, tuitId)
+                    .then(status => DisikeController.tuitDao.updateStats(tuitId, targetTuit.stats))
+                    .then(status => res.send(status));
+
             } else {
-                await DisikeController.dislikeDao.userDislikesTuit(userId, tuitId)
-                    .then(likes => res.json(likes));
                 targetTuit.stats.dislikes = dislikeCount + 1;
+                DisikeController.dislikeDao.userDislikesTuit(userId, tuitId)
+                    .then(status => DisikeController.tuitDao.updateStats(tuitId, targetTuit.stats))
+                    .then(likes => res.json(likes));
+
             }
-            await DisikeController.tuitDao.updateStats(tuitId, targetTuit.stats);
         }
     }
     /**

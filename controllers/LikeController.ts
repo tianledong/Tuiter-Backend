@@ -76,8 +76,6 @@ export default class LikeController implements LikeControllerI {
             // @ts-ignore
             req.session['profile']._id :
             req.params.uid;
-        console.log("Try to find like");
-        console.log(userId);
         if (userId === "me") {
             res.sendStatus(404);
         } else {
@@ -144,15 +142,17 @@ export default class LikeController implements LikeControllerI {
             const targetTuit =  await LikeController.tuitDao.findTuitById(tuitId);
             let likeCount = await LikeController.likeDao.countLikesForTuit(tuitId);
             if (isLiked) {
-                await LikeController.likeDao.userUnlikesTuit(userId, tuitId)
-                    .then(status => res.send(status));
                 targetTuit.stats.likes = likeCount - 1;
+                await LikeController.likeDao.userUnlikesTuit(userId, tuitId)
+                    .then(status => LikeController.tuitDao.updateStats(tuitId, targetTuit.stats))
+                    .then(status => res.send(status));
+
             } else {
-                await LikeController.likeDao.userLikesTuit(userId, tuitId)
-                    .then(likes => res.json(likes));
                 targetTuit.stats.likes = likeCount + 1;
+                await LikeController.likeDao.userLikesTuit(userId, tuitId)
+                    .then(status => LikeController.tuitDao.updateStats(tuitId, targetTuit.stats))
+                    .then(likes => res.json(likes));
             }
-            await LikeController.tuitDao.updateStats(tuitId, targetTuit.stats);
         }
     }
     /**
