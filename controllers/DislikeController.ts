@@ -150,13 +150,12 @@ export default class DisikeController implements DislikeControllerI {
                 targetTuit.stats.dislikes = dislikeCount - 1;
                 DisikeController.dislikeDao.userUndislikesTuit(userId, tuitId)
                     .then(status => DisikeController.tuitDao.updateStats(tuitId, targetTuit.stats))
-                    .then(status => res.send(status));
+                    .then(status => res.sendStatus(200));
 
             } else {
                 targetTuit.stats.dislikes = dislikeCount + 1;
                 DisikeController.dislikeDao.userDislikesTuit(userId, tuitId)
                     .then(status => DisikeController.tuitDao.updateStats(tuitId, targetTuit.stats))
-                // test
 
                 const likeDAO = LikeDao.getInstance();
                 const isLiked = await likeDAO.isUserlikesTuit(userId, tuitId);
@@ -165,9 +164,10 @@ export default class DisikeController implements DislikeControllerI {
                     targetTuit.stats.likes = likes - 1;
                     likeDAO.userUnlikesTuit(userId, tuitId)
                         .then(status => DisikeController.tuitDao.updateStats(tuitId, targetTuit.stats))
-                        .then(status => res.json(status));
+                        .then(status => res.sendStatus(200));
+                } else {
+                    res.sendStatus(200);
                 }
-                // end
             }
         }
     }
