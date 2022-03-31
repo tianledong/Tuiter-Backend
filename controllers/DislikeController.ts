@@ -6,6 +6,8 @@ import DislikeControllerI from "../interfaces/DislikeControllerI";
 import TuitDao from "../daos/TuitDao";
 import {Express, Request, Response} from "express";
 import DislikeDao from "../daos/DislikeDao";
+import LikeDao from "../daos/LikeDao";
+import LikeController from "./LikeController";
 
 /**
  * @class DislikeController Implements RESTful Web service API for likes resource.
@@ -145,15 +147,28 @@ export default class DisikeController implements DislikeControllerI {
             const targetTuit = await DisikeController.tuitDao.findTuitById(tuitId);
             let dislikeCount = await DisikeController.dislikeDao.countDislikesForTuit(tuitId);
             if (isDisliked) {
-                await DisikeController.dislikeDao.userUndislikesTuit(userId, tuitId)
-                    .then(status => res.send(status));
                 targetTuit.stats.dislikes = dislikeCount - 1;
+                DisikeController.dislikeDao.userUndislikesTuit(userId, tuitId)
+                    .then(status => DisikeController.tuitDao.updateStats(tuitId, targetTuit.stats))
+                    .then(status => res.sendStatus(200));
+
             } else {
-                await DisikeController.dislikeDao.userDislikesTuit(userId, tuitId)
-                    .then(likes => res.json(likes));
                 targetTuit.stats.dislikes = dislikeCount + 1;
+                DisikeController.dislikeDao.userDislikesTuit(userId, tuitId)
+                    .then(status => DisikeController.tuitDao.updateStats(tuitId, targetTuit.stats))
+
+                const likeDAO = LikeDao.getInstance();
+                const isLiked = await likeDAO.isUserlikesTuit(userId, tuitId);
+                if (isLiked) {
+                    const likes = await likeDAO.countLikesForTuit(tuitId)
+                    targetTuit.stats.likes = likes - 1;
+                    likeDAO.userUnlikesTuit(userId, tuitId)
+                        .then(status => DisikeController.tuitDao.updateStats(tuitId, targetTuit.stats))
+                        .then(status => res.sendStatus(200));
+                } else {
+                    res.sendStatus(200);
+                }
             }
-            await DisikeController.tuitDao.updateStats(tuitId, targetTuit.stats);
         }
     }
     /**
