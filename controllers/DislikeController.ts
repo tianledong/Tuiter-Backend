@@ -6,6 +6,8 @@ import DislikeControllerI from "../interfaces/DislikeControllerI";
 import TuitDao from "../daos/TuitDao";
 import {Express, Request, Response} from "express";
 import DislikeDao from "../daos/DislikeDao";
+import LikeDao from "../daos/LikeDao";
+import LikeController from "./LikeController";
 
 /**
  * @class DislikeController Implements RESTful Web service API for likes resource.
@@ -154,8 +156,19 @@ export default class DisikeController implements DislikeControllerI {
                 targetTuit.stats.dislikes = dislikeCount + 1;
                 DisikeController.dislikeDao.userDislikesTuit(userId, tuitId)
                     .then(status => DisikeController.tuitDao.updateStats(tuitId, targetTuit.stats))
-                    .then(likes => res.json(likes));
+                // test
 
+                const likeDAO = LikeDao.getInstance();
+                const isLiked = await likeDAO.isUserlikesTuit(userId, tuitId);
+                if (isLiked) {
+                    await likeDAO.userUnlikesTuit(userId, tuitId);
+                    const likes = await likeDAO.countLikesForTuit(tuitId)
+                    targetTuit.stats.likes = likes - 1;
+                    likeDAO.userUnlikesTuit(userId, tuitId)
+                        .then(status => DisikeController.tuitDao.updateStats(tuitId, targetTuit.stats))
+                        .then(status => res.json(status));
+                }
+                // end
             }
         }
     }
