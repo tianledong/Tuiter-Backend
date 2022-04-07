@@ -49,12 +49,12 @@ let sess = {
     saveUninitialized: true,
     resave: true,
     cookie: {
-        sameSite: process.env.ENV === "PRODUCTION" ? 'none' : 'lax',
+        sameSite: process.env.ENV === "production" ? 'none' : 'lax',
         secure: process.env.ENV
     }
 };
 
-if (process.env.ENV === 'PRODUCTION') {
+if (process.env.ENV === 'production') {
     app.set('trust proxy', 1) // trust first proxy
 }
 
@@ -62,7 +62,7 @@ if (process.env.ENV === 'PRODUCTION') {
 const PROTOCOL = "mongodb+srv";
 const DB_USERNAME = process.env.DB_USERNAME;
 const DB_PASSWORD = process.env.DB_PASSWORD;
-const HOST = "cluster0.fgnnm.mongodb.net";
+const HOST = "cluster0.eaymt.mongodb.net";
 const DB_NAME = "cs5500-tuiter";
 const DB_QUERY = "retryWrites=true&w=majority";
 const connectionString = `${PROTOCOL}://${DB_USERNAME}:${DB_PASSWORD}@${HOST}/${DB_NAME}?${DB_QUERY}`;
