@@ -86,7 +86,7 @@ export default class ChatDao implements ChatDaoI {
      * @return Promise To be notified when chat is inserted in the database
      */
     userChatsUser = async (uid: string, uid1: string, message: Chat): Promise<Chat> =>
-        chatModel.create({...message, from: uid, to: uid1});
+        chatModel.create({...message, sentBy: uid, sentTo: uid1});
 
 }
 
