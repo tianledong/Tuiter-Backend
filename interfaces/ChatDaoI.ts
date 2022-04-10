@@ -10,9 +10,9 @@ export default interface ChatDaoI {
 
     findAllChatsUserReceived(uid: string): Promise<Chat[]>;
 
-    deleteChat(mid: string): Promise<any>;
+    deleteChat(cid: string): Promise<any>;
 
-    updateChat(mid: string, message: Chat): Promise<any>;
+    updateChat(cid: string, message: Chat): Promise<any>;
 
     findAllChatsByUser(uid: string): Promise<Chat[]>;
 };

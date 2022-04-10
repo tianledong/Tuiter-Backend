@@ -30,6 +30,7 @@ import AuthenticationController from "./controllers/AuthenticationController";
 import SessionController from "./controllers/SessionController";
 import GroupController from "./controllers/GroupController";
 import DisikeController from "./controllers/DislikeController";
+import ChatController from "./controllers/ChatController";
 
 // const dotenv = require("dotenv")
 // dotenv.config()
@@ -84,6 +85,7 @@ const dislikeController = DisikeController.getInstance(app);
 const followController = FollowController.getInstance(app);
 const bookmarkController = BookmarkController.getInstance(app);
 const messageController = MessageController.getInstance(app);
+const chatController = ChatController.getInstance(app);
 AuthenticationController(app);
 SessionController(app);
 GroupController(app);
