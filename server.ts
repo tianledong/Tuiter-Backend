@@ -30,6 +30,7 @@ import AuthenticationController from "./controllers/AuthenticationController";
 import SessionController from "./controllers/SessionController";
 import GroupController from "./controllers/GroupController";
 import DisikeController from "./controllers/DislikeController";
+import ChatController from "./controllers/ChatController";
 
 // const dotenv = require("dotenv")
 // dotenv.config()
@@ -45,7 +46,7 @@ app.use(cors({
 }));
 
 let sess = {
-    secret: process.env.SECRET,
+    secret: "secret",//process.env.SECRET,
     saveUninitialized: true,
     resave: true,
     cookie: {
@@ -65,7 +66,7 @@ const DB_PASSWORD = process.env.DB_PASSWORD;
 const HOST = "cluster0.eaymt.mongodb.net";
 const DB_NAME = "cs5500-tuiter";
 const DB_QUERY = "retryWrites=true&w=majority";
-const connectionString = `${PROTOCOL}://${DB_USERNAME}:${DB_PASSWORD}@${HOST}/${DB_NAME}?${DB_QUERY}`;
+const connectionString = "mongodb+srv://cs5500:QaCQx6IEiuSWAo5a@cluster0.eaymt.mongodb.net/cs5500-tuiter?retryWrites=true&w=majority";//`${PROTOCOL}://${DB_USERNAME}:${DB_PASSWORD}@${HOST}/${DB_NAME}?${DB_QUERY}`;
 // connect to the database
 mongoose.connect(connectionString);
 
@@ -84,6 +85,7 @@ const dislikeController = DisikeController.getInstance(app);
 const followController = FollowController.getInstance(app);
 const bookmarkController = BookmarkController.getInstance(app);
 const messageController = MessageController.getInstance(app);
+const chatController = ChatController.getInstance(app);
 AuthenticationController(app);
 SessionController(app);
 GroupController(app);
