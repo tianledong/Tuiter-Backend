@@ -54,7 +54,7 @@ let sessionMiddleware = session({
     resave: true,
     cookie: {
         sameSite: process.env.ENV === "production" ? 'none' : 'lax',
-        secure: process.env.ENV === "production"
+        secure: process.env.ENV === "production" ? 'true' : 'auto',
     }
 });
 
@@ -81,6 +81,7 @@ const io = new Server(httpServer, {
     cors: {
         origin: "http://localhost:3000",
         methods: ["GET", "POST"],
+        credentials: true
     }
 });
 
@@ -92,7 +93,7 @@ io.use(wrap(sessionMiddleware));
 io.use((socket, next) => {
     // @ts-ignore
     const session = socket.request.session;
-    if (session && session.authenticated) {
+    if (session && session.authenticated === true) {
         console.log('login')
         next();
     } else {
