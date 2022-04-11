@@ -19,6 +19,8 @@ const AuthenticationController = (app: Express) => {
             existingUser.password = '*****';
             // @ts-ignore
             req.session['profile'] = existingUser;
+            // @ts-ignore
+            req.session['authenticated'] = true;
             res.json(existingUser);
         } else {
             res.sendStatus(403);
@@ -41,6 +43,8 @@ const AuthenticationController = (app: Express) => {
             insertedUser.password = '';
             // @ts-ignore
             req.session['profile'] = insertedUser;
+            // @ts-ignore
+            req.session['authenticated'] = true;
             res.json(insertedUser);
         }
     }
