@@ -106,8 +106,13 @@ io.on("connection", (socket) => {
     // @ts-ignore
     console.log(`User Connected: ${socket.request.session.profile._id}`);
 
-    
-
+    socket.on("private message", (message, to) => {
+        socket.to(to).emit("receive_message", {
+            message,
+            // @ts-ignore
+            from: socket.request.session.profile._id,
+        });
+    });
     socket.on("disconnect", () => {
         // @ts-ignore
         console.log("User Disconnected", socket.request.session.profile._id);
