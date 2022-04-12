@@ -82,7 +82,7 @@ const io = new Server(httpServer, {
         origin: "http://localhost:3000",
         methods: ["GET", "POST"],
         credentials: true
-    }
+    },
 });
 
 // @ts-ignore
@@ -103,10 +103,14 @@ io.use((socket, next) => {
 });
 
 io.on("connection", (socket) => {
-    console.log(`User Connected: ${socket.id}`);
+    // @ts-ignore
+    console.log(`User Connected: ${socket.request.session.profile._id}`);
+
+    
 
     socket.on("disconnect", () => {
-        console.log("User Disconnected", socket.id);
+        // @ts-ignore
+        console.log("User Disconnected", socket.request.session.profile._id);
     });
 });
 

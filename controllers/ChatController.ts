@@ -44,7 +44,8 @@ export default class ChatController implements ChatControllerI {
             app.get("/api/users/:uid/chats/received", ChatController.chatController.findAllChatsUserReceived);
             app.delete("/api/chats/:cid", ChatController.chatController.deleteChat);
             app.put("/api/chats/:cid", ChatController.chatController.updateChat);
-            app.post("/api/users/:uid/chats/:uid1", ChatController.chatController.userChatsUser)
+            app.post("/api/users/:uid/chats/:uid1", ChatController.chatController.userChatsUser);
+            app.get("/api/users/:uid/chats/:uid1", ChatController.chatController.findChatForUsers);
         }
         return ChatController.chatController;
     }
@@ -111,7 +112,33 @@ export default class ChatController implements ChatControllerI {
      * @param {Response} res Represents response to client, including the
      * body formatted as JSON object containing the chat object
      */
-    userChatsUser = (req: Request, res: Response) =>
-        ChatController.chatDao.userChatsUser(req.params.uid, req.params.uid1, req.body)
-            .then(chat => res.json(chat));
+    userChatsUser = (req: Request, res: Response) => {
+        let userId = req.params.uid === "me"
+        // @ts-ignore
+        && req.session['profile'] ?
+            // @ts-ignore
+            req.session['profile']._id :
+            req.params.uid;
+        if (userId === 'me') {
+            res.sendStatus(404)
+        } else {
+            ChatController.chatDao.userChatsUser(userId, req.params.uid1, req.body)
+                .then(chat => res.json(chat));
+        }
+    }
+
+    findChatForUsers = (req: Request, res: Response) => {
+        let userId = req.params.uid === "me"
+        // @ts-ignore
+        && req.session['profile'] ?
+            // @ts-ignore
+            req.session['profile']._id :
+            req.params.uid;
+        if (userId === 'me') {
+            res.sendStatus(404)
+        } else {
+            ChatController.chatDao.findChatForUsers(userId, req.params.uid1)
+                .then(chats => res.json(chats));
+        }
+    }
 }

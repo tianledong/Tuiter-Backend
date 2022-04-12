@@ -88,6 +88,11 @@ export default class ChatDao implements ChatDaoI {
     userChatsUser = async (uid: string, uid1: string, message: Chat): Promise<Chat> =>
         chatModel.create({...message, sentBy: uid, sentTo: uid1});
 
+    findChatForUsers = async (uid: string, uid1: string): Promise<any> =>
+        chatModel.find({$or: [{sentTo: uid, sentBy: uid1}, {sentTo: uid1, sentBy: uid}]})
+            .exec();
+
+
 }
 
 
