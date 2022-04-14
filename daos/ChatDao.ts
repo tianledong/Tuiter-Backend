@@ -5,6 +5,7 @@
 import ChatDaoI from "../interfaces/ChatDaoI";
 import Chat from "../models/chats/Chat";
 import chatModel from "../mongoose/chats/ChatModel";
+import TuitModel from "../mongoose/tuits/TuitModel";
 
 /**
  * @class ChatDao Implements Data Access Object managing data storage
@@ -92,7 +93,15 @@ export default class ChatDao implements ChatDaoI {
         chatModel.find({$or: [{sentTo: uid, sentBy: uid1}, {sentTo: uid1, sentBy: uid}]})
             .exec();
 
+    countTotalUnreadMessage = async (uid: string): Promise<any> =>
+        chatModel.count({sentTo: uid, isRead: false});
 
+    countTotalUnreadMessageForUsers = async (uid: string, uid1: string): Promise<any> =>
+        chatModel.count({sentBy: uid1, sentTo: uid, isRead: false});
+
+    updateRead = async (uid: string, uid1: string): Promise<any> =>
+        chatModel.updateMany({sentBy: uid1, sentTo: uid},
+            {$set: {isRead: true}});
 }
 
 

@@ -94,6 +94,8 @@ io.use((socket, next) => {
     // @ts-ignore
     const session = socket.request.session;
     if (session && session.authenticated === true) {
+        // @ts-ignore
+        socket.userID = session.profile._id;
         console.log('login')
         next();
     } else {
@@ -104,18 +106,22 @@ io.use((socket, next) => {
 
 io.on("connection", (socket) => {
     // @ts-ignore
-    console.log(`User Connected: ${socket.request.session.profile._id}`);
+    console.log(`User Connected: ${socket.userID}`);
+    // @ts-ignore
+    socket.join(socket.userID);
 
-    socket.on("private message", (message, to) => {
+    socket.on("private message", ({message, to}) => {
+        console.log('Sending DM to', to, 'message', message)
+        // @ts-ignore
         socket.to(to).emit("receive_message", {
-            message,
+            message: message,
             // @ts-ignore
-            from: socket.request.session.profile._id,
+            from: socket.userID,
         });
     });
     socket.on("disconnect", () => {
         // @ts-ignore
-        console.log("User Disconnected", socket.request.session.profile._id);
+        console.log("User Disconnected", socket.userID);
     });
 });
 

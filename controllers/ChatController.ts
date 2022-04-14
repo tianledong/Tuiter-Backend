@@ -46,6 +46,9 @@ export default class ChatController implements ChatControllerI {
             app.put("/api/chats/:cid", ChatController.chatController.updateChat);
             app.post("/api/users/:uid/chats/:uid1", ChatController.chatController.userChatsUser);
             app.get("/api/users/:uid/chats/:uid1", ChatController.chatController.findChatForUsers);
+            app.put("/api/users/:uid/chats/:uid1", ChatController.chatController.updateRead);
+            app.get("/api/chats/users/:uid/unread", ChatController.chatController.countTotalUnreadMessage);
+            app.get("/api/users/:uid/chats/:uid1/unread", ChatController.chatController.countTotalUnreadMessageForUsers);
         }
         return ChatController.chatController;
     }
@@ -139,6 +142,51 @@ export default class ChatController implements ChatControllerI {
         } else {
             ChatController.chatDao.findChatForUsers(userId, req.params.uid1)
                 .then(chats => res.json(chats));
+        }
+    }
+
+    countTotalUnreadMessage = (req: Request, res: Response) => {
+        let userId = req.params.uid === "me"
+        // @ts-ignore
+        && req.session['profile'] ?
+            // @ts-ignore
+            req.session['profile']._id :
+            req.params.uid;
+        if (userId === 'me') {
+            res.sendStatus(404)
+        } else {
+            ChatController.chatDao.countTotalUnreadMessage(userId)
+                .then(count => res.json(count));
+        }
+    }
+
+    countTotalUnreadMessageForUsers = (req: Request, res: Response) => {
+        let userId = req.params.uid === "me"
+        // @ts-ignore
+        && req.session['profile'] ?
+            // @ts-ignore
+            req.session['profile']._id :
+            req.params.uid;
+        if (userId === 'me') {
+            res.sendStatus(404)
+        } else {
+            ChatController.chatDao.countTotalUnreadMessageForUsers(userId, req.params.uid1)
+                .then(count => res.json(count));
+        }
+    }
+
+    updateRead = (req: Request, res: Response) => {
+        let userId = req.params.uid === "me"
+        // @ts-ignore
+        && req.session['profile'] ?
+            // @ts-ignore
+            req.session['profile']._id :
+            req.params.uid;
+        if (userId === 'me') {
+            res.sendStatus(404)
+        } else {
+            ChatController.chatDao.updateRead(userId, req.params.uid1)
+                .then(count => res.json(count));
         }
     }
 }

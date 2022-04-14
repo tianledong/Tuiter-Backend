@@ -7,6 +7,7 @@ const ChatSchema = new mongoose.Schema({
     sentBy: {type: Schema.Types.ObjectId, ref: "UserModel"},
     sentTo: {type: Schema.Types.ObjectId, ref: "UserModel"},
     sentOn: {type: Date, default: Date.now},
-    message: {type: String, required: true}
+    message: {type: String, required: true},
+    isRead: {type: Boolean, default: false}
 }, {collection: "chats"});
 export default ChatSchema;
