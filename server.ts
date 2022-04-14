@@ -43,9 +43,12 @@ const session = require("express-session");
 const app = express();
 const httpServer = createServer(app);
 app.use(bodyParser.json());
+
+const frontEnd = process.env.FRONTEND;
+
 app.use(cors({
     credentials: true,
-    origin: ['http://localhost:3000', 'http://localhost:3000/', process.env.FRONTEND]
+    origin: ['http://localhost:3000', 'http://localhost:3000/', frontEnd]
 }));
 
 let sessionMiddleware = session({
@@ -77,9 +80,11 @@ app.use(sessionMiddleware)
 app.use(express.json())
 
 
+
 const io = new Server(httpServer, {
     cors: {
-        origin: "http://localhost:3000",
+        // @ts-ignore
+        origin: ["http://localhost:3000", frontEnd],
         methods: ["GET", "POST"],
         credentials: true
     },
@@ -96,27 +101,29 @@ io.use((socket, next) => {
     if (session && session.authenticated === true) {
         // @ts-ignore
         socket.userID = session.profile._id;
-        console.log('login')
         next();
     } else {
-        console.log('not login')
         next(new Error("unauthorized"));
     }
 });
 
 io.on("connection", (socket) => {
     // @ts-ignore
-    console.log(`User Connected: ${socket.userID}`);
-    // @ts-ignore
     socket.join(socket.userID);
 
     socket.on("private message", ({message, to}) => {
-        console.log('Sending DM to', to, 'message', message)
         // @ts-ignore
         socket.to(to).emit("receive_message", {
             message: message,
             // @ts-ignore
             from: socket.userID,
+        });
+    });
+
+    socket.on("refresh float button", ({message}) => {
+        // @ts-ignore
+        io.to(socket.userID).emit("refresh_float_button", {
+            message: message
         });
     });
     socket.on("disconnect", () => {
