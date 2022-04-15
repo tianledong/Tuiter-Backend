@@ -17,5 +17,6 @@ export default interface Chat {
     sentBy: User,
     sentTo: User,
     sentOn: Date,
-    message: string
+    message: string,
+    isRead: boolean
 };
