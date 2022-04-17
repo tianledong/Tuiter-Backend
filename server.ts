@@ -31,7 +31,8 @@ import SessionController from "./controllers/SessionController";
 import GroupController from "./controllers/GroupController";
 import DisikeController from "./controllers/DislikeController";
 import ChatController from "./controllers/ChatController";
-import * as Process from "process";
+import { createServer } from "http";
+import { Server } from "socket.io";
 
 const dotenv = require("dotenv")
 dotenv.config()
@@ -40,21 +41,25 @@ var cors = require('cors')
 const session = require("express-session");
 
 const app = express();
+const httpServer = createServer(app);
 app.use(bodyParser.json());
+
+const frontEnd = process.env.FRONTEND;
+
 app.use(cors({
     credentials: true,
-    origin: ['http://localhost:3000', 'http://localhost:3000/', process.env.FRONTEND]
+    origin: ['http://localhost:3000', 'http://localhost:3000/', frontEnd]
 }));
 
-let sess = {
+let sessionMiddleware = session({
     secret: process.env.SECRET,
     saveUninitialized: true,
     resave: true,
     cookie: {
         sameSite: process.env.ENV === "production" ? 'none' : 'lax',
-        secure: process.env.ENV === "production"
+        secure: process.env.ENV === "production" ? 'true' : 'auto',
     }
-};
+});
 
 if (process.env.ENV === 'production') {
     app.set('trust proxy', 1) // trust first proxy
@@ -71,8 +76,61 @@ const connectionString = `${PROTOCOL}://${DB_USERNAME}:${DB_PASSWORD}@${HOST}/${
 // connect to the database
 mongoose.connect(connectionString);
 
-app.use(session(sess))
+app.use(sessionMiddleware)
 app.use(express.json())
+
+
+
+const io = new Server(httpServer, {
+    cors: {
+        // @ts-ignore
+        origin: ["http://localhost:3000", frontEnd],
+        methods: ["GET", "POST"],
+        credentials: true
+    },
+});
+
+// @ts-ignore
+const wrap = middleware => (socket, next) => middleware(socket.request, {}, next);
+
+io.use(wrap(sessionMiddleware));
+
+io.use((socket, next) => {
+    // @ts-ignore
+    const session = socket.request.session;
+    if (session && session.authenticated === true) {
+        // @ts-ignore
+        socket.userID = session.profile._id;
+        next();
+    } else {
+        next(new Error("unauthorized"));
+    }
+});
+
+io.on("connection", (socket) => {
+    // @ts-ignore
+    socket.join(socket.userID);
+
+    socket.on("private message", ({message, to}) => {
+        // @ts-ignore
+        socket.to(to).emit("receive_message", {
+            message: message,
+            // @ts-ignore
+            from: socket.userID,
+        });
+    });
+
+    socket.on("refresh float button", ({message}) => {
+        // @ts-ignore
+        io.to(socket.userID).emit("refresh_float_button", {
+            message: message
+        });
+    });
+    socket.on("disconnect", () => {
+        // @ts-ignore
+        console.log("User Disconnected", socket.userID);
+    });
+});
 
 app.get('/', (req, res) =>
     res.send('This app is running!'));
@@ -95,4 +153,4 @@ GroupController(app);
  * but use environment variable PORT on Heroku if available.
  */
 const PORT = 4000;
-app.listen(process.env.PORT || PORT);
+httpServer.listen(process.env.PORT || PORT);
