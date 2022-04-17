@@ -31,9 +31,10 @@ import SessionController from "./controllers/SessionController";
 import GroupController from "./controllers/GroupController";
 import DisikeController from "./controllers/DislikeController";
 import ChatController from "./controllers/ChatController";
+import * as Process from "process";
 
-// const dotenv = require("dotenv")
-// dotenv.config()
+const dotenv = require("dotenv")
+dotenv.config()
 
 var cors = require('cors')
 const session = require("express-session");
@@ -46,12 +47,12 @@ app.use(cors({
 }));
 
 let sess = {
-    secret: "secret",//process.env.SECRET,
+    secret: process.env.SECRET,
     saveUninitialized: true,
     resave: true,
     cookie: {
         sameSite: process.env.ENV === "production" ? 'none' : 'lax',
-        secure: process.env.ENV
+        secure: process.env.ENV === "production"
     }
 };
 
@@ -66,7 +67,7 @@ const DB_PASSWORD = process.env.DB_PASSWORD;
 const HOST = "cluster0.eaymt.mongodb.net";
 const DB_NAME = "cs5500-tuiter";
 const DB_QUERY = "retryWrites=true&w=majority";
-const connectionString = "mongodb+srv://cs5500:QaCQx6IEiuSWAo5a@cluster0.eaymt.mongodb.net/cs5500-tuiter?retryWrites=true&w=majority";//`${PROTOCOL}://${DB_USERNAME}:${DB_PASSWORD}@${HOST}/${DB_NAME}?${DB_QUERY}`;
+const connectionString = `${PROTOCOL}://${DB_USERNAME}:${DB_PASSWORD}@${HOST}/${DB_NAME}?${DB_QUERY}`;
 // connect to the database
 mongoose.connect(connectionString);
 
