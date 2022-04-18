@@ -130,6 +130,14 @@ export default class ChatController implements ChatControllerI {
         }
     }
 
+    /**
+     * Fetch all chat messages for users
+     * @param {Request} req Represents request from client, including the path
+     * parameter uid representing a user, uid1 representing another user
+     * and body contains the chat string
+     * @param {Response} res Represents response to client, including the
+     * body formatted as JSON object containing the chat object
+     */
     findChatForUsers = (req: Request, res: Response) => {
         let userId = req.params.uid === "me"
         // @ts-ignore
@@ -145,6 +153,13 @@ export default class ChatController implements ChatControllerI {
         }
     }
 
+    /**
+     * Fetch the total amount of unread messages
+     * @param {Request} req Represents request from client, including the path
+     * parameter uid representing a user
+     * @param {Response} res Represents response to client, including the
+     * body formatted as JSON object containing the chat object
+     */
     countTotalUnreadMessage = (req: Request, res: Response) => {
         let userId = req.params.uid === "me"
         // @ts-ignore
@@ -160,6 +175,14 @@ export default class ChatController implements ChatControllerI {
         }
     }
 
+    /**
+     * Fetch the total amount of unread messages for both users
+     * @param {Request} req Represents request from client, including the path
+     * parameter uid representing a user, uid1 representing another user
+     * and body contains the chat string
+     * @param {Response} res Represents response to client, including the
+     * body formatted as JSON object containing the chat object
+     */
     countTotalUnreadMessageForUsers = (req: Request, res: Response) => {
         let userId = req.params.uid === "me"
         // @ts-ignore
@@ -175,6 +198,14 @@ export default class ChatController implements ChatControllerI {
         }
     }
 
+    /**
+     * Update a sent chat message
+     * @param {Request} req Represents request from client, including the path
+     * parameter uid representing a user, uid1 representing another user
+     * and body contains the chat string
+     * @param {Response} res Represents response to client, including the
+     * body formatted as JSON object containing the chat object
+     */
     updateRead = (req: Request, res: Response) => {
         let userId = req.params.uid === "me"
         // @ts-ignore

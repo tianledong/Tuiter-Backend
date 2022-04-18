@@ -89,16 +89,35 @@ export default class ChatDao implements ChatDaoI {
     userChatsUser = async (uid: string, uid1: string, message: Chat): Promise<Chat> =>
         chatModel.create({...message, sentBy: uid, sentTo: uid1});
 
+    /**
+     * Fetch all chat messages for users
+     * @param {string} uid User's primary key
+     * @param {string} uid1 Another user's primary key
+     */
     findChatForUsers = async (uid: string, uid1: string): Promise<any> =>
         chatModel.find({$or: [{sentTo: uid, sentBy: uid1}, {sentTo: uid1, sentBy: uid}]})
             .exec();
 
+    /**
+     * Fetch the total amount of unread messages
+     * @param {string} uid User's primary key
+     */
     countTotalUnreadMessage = async (uid: string): Promise<any> =>
         chatModel.count({sentTo: uid, isRead: false});
 
+    /**
+     * Fetch the total amount of unread messages for both users
+     * @param {string} uid User's primary key
+     * @param {string} uid1 Another user's primary key
+     */
     countTotalUnreadMessageForUsers = async (uid: string, uid1: string): Promise<any> =>
         chatModel.count({sentBy: uid1, sentTo: uid, isRead: false});
 
+    /**
+     * Update a sent chat message
+     * @param {string} uid User's primary key
+     * @param {string} uid1 Another user's primary key
+     */
     updateRead = async (uid: string, uid1: string): Promise<any> =>
         chatModel.updateMany({sentBy: uid1, sentTo: uid},
             {$set: {isRead: true}});
